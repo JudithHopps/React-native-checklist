@@ -1,6 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {
+  useState,
+  useEffect,
+  useImperativeHandle,
+  forwardRef,
+} from 'react';
 import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
-import {CheckboxIcon, ChecklistsIcon} from '../assets/svgs/svg';
+import {CheckboxIcon, ChecklistsIcon} from '../assets/svgs/Icons';
 import ProgressBar from './ProgressBar';
 
 type ChecklistFetchItem = {
@@ -18,11 +23,15 @@ type WeeklyDataProps = {
   selectedWeek: number;
 };
 
-const WeeklyData: React.FC<WeeklyDataProps> = ({selectedWeek}) => {
+const WeeklyData = forwardRef<any, WeeklyDataProps>(({selectedWeek}, ref) => {
   const [checklistData, setChecklistData] = useState<ChecklistItem[]>([]);
   const [selectedWeekData, setSelectedWeekData] = useState<ChecklistItem[]>([]);
   const [completedCount, setCompletedCount] = useState<number>(0);
   const [totalItems, setTotalItems] = useState<number>(0);
+
+  useImperativeHandle(ref, () => ({
+    addChecklist,
+  }));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,6 +77,14 @@ const WeeklyData: React.FC<WeeklyDataProps> = ({selectedWeek}) => {
     setSelectedWeekData(updatedData);
   };
 
+  const addChecklist = (newChecklist: string) => {
+    const updatedChecklist = [
+      {weekNumber: selectedWeek, content: newChecklist, completed: false},
+      ...checklistData,
+    ];
+    setChecklistData(updatedChecklist);
+  };
+
   return (
     <View style={styles.container}>
       {totalItems > 0 ? (
@@ -76,6 +93,7 @@ const WeeklyData: React.FC<WeeklyDataProps> = ({selectedWeek}) => {
             totalItems={totalItems}
             completedCount={completedCount}
           />
+
           <FlatList
             data={selectedWeekData}
             renderItem={({item, index}) => (
@@ -107,7 +125,7 @@ const WeeklyData: React.FC<WeeklyDataProps> = ({selectedWeek}) => {
       )}
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -148,6 +166,11 @@ const styles = StyleSheet.create({
   addChecklistsText: {
     fontSize: 13,
     color: '#999',
+  },
+  addlistContainer: {
+    position: 'absolute',
+    bottom: 0, // 원하는 수치로 조정 가능
+    right: 20, //
   },
 });
 
