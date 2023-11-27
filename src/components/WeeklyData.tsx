@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import {checkboxIcon} from '../assets/svgs/svg';
 import ProgressBar from './ProgressBar';
 
@@ -52,25 +52,41 @@ const WeeklyData: React.FC<WeeklyDataProps> = ({selectedWeek}) => {
     };
 
     const filteredData = getFilteredData();
-    const completedTasks = filteredData.filter(item => item.completed);
 
     setSelectedWeekData(filteredData);
+  }, [selectedWeek, checklistData]);
+
+  useEffect(() => {
+    const completedTasks = selectedWeekData.filter(item => item.completed);
     setCompletedCount(completedTasks.length);
-    setTotalItems(filteredData.length);
-  }, [checklistData, selectedWeek]);
+    setTotalItems(selectedWeekData.length);
+  }, [selectedWeekData]);
+
+  const toggleComplete = (index: number) => {
+    const updatedData = [...selectedWeekData];
+    updatedData[index].completed = !updatedData[index].completed;
+    setSelectedWeekData(updatedData);
+  };
 
   return (
     <View style={styles.container}>
       <ProgressBar totalItems={totalItems} completedCount={completedCount} />
       <FlatList
         data={selectedWeekData}
-        renderItem={({item}) => (
-          <View style={styles.checklistContatiner}>
-            {checkboxIcon(item.completed)}
-            <Text style={styles.week}>{item.content}</Text>
-          </View>
+        renderItem={({item, index}) => (
+          <TouchableOpacity onPress={() => toggleComplete(index)}>
+            <View style={styles.checklistContatiner}>
+              {checkboxIcon(item.completed)}
+              <Text
+                style={
+                  item.completed ? styles.completelist : styles.uncompletelist
+                }>
+                {item.content}
+              </Text>
+            </View>
+          </TouchableOpacity>
         )}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(_, index) => index.toString()}
       />
     </View>
   );
@@ -88,11 +104,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 10,
   },
-  week: {
+  uncompletelist: {
     fontSize: 14,
     fontWeight: '400',
     color: '#333',
     paddingLeft: 12,
+  },
+  completelist: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#C4C4C4',
+    paddingLeft: 12,
+    textDecorationLine: 'line-through',
   },
 });
 

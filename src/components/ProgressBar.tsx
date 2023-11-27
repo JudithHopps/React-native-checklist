@@ -10,7 +10,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   completedCount,
   totalItems,
 }) => {
-  const percentage = totalItems > 0 ? (completedCount / totalItems) * 100 : 0;
+  const percentage =
+    totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
 
   return (
     <View style={styles.container}>
