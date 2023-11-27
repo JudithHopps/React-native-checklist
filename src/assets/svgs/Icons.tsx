@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg, {Path, Circle} from 'react-native-svg';
+import {Svg, Path, Circle} from 'react-native-svg';
 
 export const Rectangle897 = (isChoice: boolean): JSX.Element => (
   <Svg width="50" height="62" viewBox="0 0 50 62" fill="none">
@@ -18,11 +18,6 @@ export const CheckboxIcon = (isCompleted: boolean): JSX.Element => (
       d="M18.3989 8.26758C18.7113 8.58 18.7113 9.08653 18.3989 9.39895L10.8155 16.9823C10.5031 17.2947 9.99658 17.2947 9.68416 16.9823L5.60083 12.899C5.28841 12.5865 5.28841 12.08 5.60083 11.7676C5.91325 11.4552 6.41978 11.4552 6.7322 11.7676L10.2498 15.2852L17.2675 8.26758C17.5799 7.95516 18.0864 7.95516 18.3989 8.26758Z"
       fill={isCompleted ? 'white' : '#C4C4C4'}
     />
-  </Svg>
-);
-export const Icon_18_Check = (isCompleted: boolean): JSX.Element => (
-  <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Circle cx="12" cy="12" r="12" fill={isCompleted ? '#44CEC6' : '#F0F0F0'} />
   </Svg>
 );
 
