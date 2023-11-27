@@ -1,37 +1,57 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, FlatList, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
-    width: 375,
-    height: 60,
-    flexShrink: 0,
-    paddingVertical: 20,
-    paddingHorizontal: 146,
-    paddingBottom: 18,
-  },
   week: {
     fontSize: 16,
     fontWeight: '700',
     color: '#333',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
 });
 
+type WeekItemProps = {
+  item: number;
+};
+
+const WeekItem: React.FC<WeekItemProps> = ({item}) => (
+  <View style={styles.week}>
+    <Text>{`Week ${item}`}</Text>
+  </View>
+);
+
 type WeekSelectionProps = {
   selectedWeek: number;
-  onSelectWeek: number;
+  onSelectWeek: (week: number) => void;
 };
 
 const WeekSelection: React.FC<WeekSelectionProps> = ({
   selectedWeek,
   onSelectWeek,
 }) => {
+  const data = Array.from({length: 41}, (_, index) => index);
+
+  const handleSelectWeek = (week: number) => {
+    onSelectWeek(week);
+  };
+
+  const renderItem = ({item}: {item: number}) => (
+    <TouchableOpacity onPress={() => handleSelectWeek(item)}>
+      <WeekItem item={item} />
+    </TouchableOpacity>
+  );
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.week}>
-        {selectedWeek} {onSelectWeek}
-      </Text>
-    </View>
+    <FlatList
+      horizontal={true} // 수평 스크롤
+      data={data}
+      renderItem={renderItem}
+      keyExtractor={item => item.toString()}
+      extraData={selectedWeek}
+      onEndReached={() => {}}
+      onEndReachedThreshold={0.5}
+    />
   );
 };
 
