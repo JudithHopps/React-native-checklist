@@ -9,7 +9,7 @@ export const Rectangle897 = (isChoice: boolean): JSX.Element => (
     />
   </Svg>
 );
-export const checkboxIcon = (isCompleted: boolean): JSX.Element => (
+export const CheckboxIcon = (isCompleted: boolean): JSX.Element => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
     <Circle cx="12" cy="12" r="12" fill={isCompleted ? '#44CEC6' : '#F0F0F0'} />
     <Path
@@ -26,7 +26,7 @@ export const Icon_18_Check = (isCompleted: boolean): JSX.Element => (
   </Svg>
 );
 
-export const Graphic_190_Checklists = (): JSX.Element => (
+export const ChecklistsIcon = (): JSX.Element => (
   <Svg width="191" height="140" viewBox="0 0 191 140" fill="none">
     <Path
       d="M170.987 117.756C170.987 120.482 168.777 122.692 166.051 122.692C163.325 122.692 161.115 120.482 161.115 117.756C161.115 115.03 163.325 112.82 166.051 112.82C168.777 112.82 170.987 115.03 170.987 117.756Z"

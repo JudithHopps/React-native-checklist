@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
-import {checkboxIcon} from '../assets/svgs/svg';
+import {CheckboxIcon, ChecklistsIcon} from '../assets/svgs/svg';
 import ProgressBar from './ProgressBar';
 
 type ChecklistFetchItem = {
@@ -70,24 +70,41 @@ const WeeklyData: React.FC<WeeklyDataProps> = ({selectedWeek}) => {
 
   return (
     <View style={styles.container}>
-      <ProgressBar totalItems={totalItems} completedCount={completedCount} />
-      <FlatList
-        data={selectedWeekData}
-        renderItem={({item, index}) => (
-          <TouchableOpacity onPress={() => toggleComplete(index)}>
-            <View style={styles.checklistContatiner}>
-              {checkboxIcon(item.completed)}
-              <Text
-                style={
-                  item.completed ? styles.completelist : styles.uncompletelist
-                }>
-                {item.content}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-        keyExtractor={(_, index) => index.toString()}
-      />
+      {totalItems > 0 ? (
+        <View>
+          <ProgressBar
+            totalItems={totalItems}
+            completedCount={completedCount}
+          />
+          <FlatList
+            data={selectedWeekData}
+            renderItem={({item, index}) => (
+              <TouchableOpacity onPress={() => toggleComplete(index)}>
+                <View style={styles.checklistContatiner}>
+                  {CheckboxIcon(item.completed)}
+                  <Text
+                    style={
+                      item.completed
+                        ? styles.completelist
+                        : styles.uncompletelist
+                    }>
+                    {item.content}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(_, index) => index.toString()}
+          />
+        </View>
+      ) : (
+        <View style={styles.emptyListContainer}>
+          {ChecklistsIcon()}
+          <Text style={styles.noChecklistsText}>No checklists</Text>
+          <Text style={styles.addChecklistsText}>
+            Add checklists that should be checked weekly.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -116,6 +133,21 @@ const styles = StyleSheet.create({
     color: '#C4C4C4',
     paddingLeft: 12,
     textDecorationLine: 'line-through',
+  },
+  emptyListContainer: {
+    marginTop: 99,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noChecklistsText: {
+    fontSize: 20,
+    color: '#84858F',
+    fontWeight: '700',
+    marginBottom: 8,
+  },
+  addChecklistsText: {
+    fontSize: 13,
+    color: '#999',
   },
 });
 
