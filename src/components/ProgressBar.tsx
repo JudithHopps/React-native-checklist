@@ -17,7 +17,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     <View style={styles.container}>
       <View style={styles.progressDetail}>
         <Text style={styles.completedTextStyle}>
-          {completedCount} of {completedCount} completed{' '}
+          {completedCount} of {totalItems} completed{' '}
         </Text>
         <Text style={styles.percentageTextStyle}>{percentage}%</Text>
       </View>

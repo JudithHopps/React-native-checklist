@@ -21,6 +21,18 @@ export const CheckboxIcon = (isCompleted: boolean): JSX.Element => (
   </Svg>
 );
 
+export const MinusIcon = (): JSX.Element => (
+  <Svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <Circle cx="14" cy="14" r="14" fill="#FF5146" />
+    <Path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M8.39999 14C8.39999 13.6686 8.66862 13.4 8.99999 13.4H19C19.3314 13.4 19.6 13.6686 19.6 14C19.6 14.3313 19.3314 14.6 19 14.6H8.99999C8.66862 14.6 8.39999 14.3313 8.39999 14Z"
+      fill="white"
+    />
+  </Svg>
+);
+
 export const ChecklistsIcon = (): JSX.Element => (
   <Svg width="191" height="140" viewBox="0 0 191 140" fill="none">
     <Path

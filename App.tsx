@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -15,18 +15,16 @@ import Input from './src/components/common/Input';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   weekSelectionContainer: {
-    justifyContent: 'space-around', // 주변에 여백을 두고 배치
-    width: '100%', // 부모 View의 100%를 차지
+    justifyContent: 'space-around',
+    width: '100%',
     marginBottom: 16,
   },
   addlistContainer: {
     position: 'absolute',
-    bottom: 20, // 원하는 수치로 조정 가능
-    right: 20, //
+    bottom: 20,
+    right: 20,
   },
 });
 
@@ -35,8 +33,17 @@ const MainScreen = () => {
   const [addlist, setAddlist] = useState('');
   const [isVisibleAddBtn, setIsVisibleAddBtn] = useState<boolean>(true);
   const [isVisibleInput, setIsVisibleInput] = useState<boolean>(false);
+  const [isVisibleEditBtn, setIsVisibleEditBtn] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const weeklyDateRef = useRef<any>(null);
+
+  // useEffect(() => {
+  //   setIsVisibleAddBtn(true);
+  //   setIsVisibleInput(false);
+  //   setIsVisibleEditBtn(true);
+  //   setIsEditing(false);
+  // }, [selectedWeek]);
 
   const handleSelectWeek = (week: number) => {
     setSelectedWeek(week);
@@ -57,7 +64,13 @@ const MainScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ChecklistTitle title="Checklists" />
+      <ChecklistTitle
+        title="Checklists"
+        isVisibleEditBtn={isVisibleEditBtn}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+        handleDelete={weeklyDateRef.current?.handleDelete}
+      />
 
       <View style={styles.weekSelectionContainer}>
         <WeekSelection
@@ -68,7 +81,12 @@ const MainScreen = () => {
 
       <Divider />
 
-      <WeeklyData selectedWeek={selectedWeek} ref={weeklyDateRef} />
+      <WeeklyData
+        selectedWeek={selectedWeek}
+        setIsVisibleEditBtn={setIsVisibleEditBtn}
+        isEditing={isEditing}
+        ref={weeklyDateRef}
+      />
 
       {isVisibleAddBtn && (
         <TouchableOpacity
