@@ -1,79 +1,55 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting Started
+## 기능
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## 디자인 및 기능 명세서
+-[자세히 보기](https://www.figma.com/file/Hecgc7E5DvXeITksgwnyDY/23H2-Frontend-Assignment-for-Global-Dev-Squad-Applicants?type=design&node-id=0%3A1&mode=design&t=1CZcDDr2uttvvpxB-1)
 
-## Step 1: Start the Metro Server
+## 기간
+> 2023.11.27~28 
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## 모듈화
+![image](https://github.com/JudithHopps/React-native-checklist/assets/113181934/93236a1a-b187-4e0a-90a7-fb1b635eb527)
 
-To start Metro, run the following command from the _root_ of your React Native project:
 
-```bash
-# using npm
-npm start
+큰 틀로 3개의 레이아웃으로 나눠서 뼈대를 잡고 프로젝트를 구현했다. 
 
-# OR using Yarn
-yarn start
-```
+- [자세히 보기](https://judith-hopps.tistory.com/m/305)
 
-## Step 2: Start your Application
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## 상태관리
+- [자세히 보기](https://judith-hopps.tistory.com/m/306)
 
-### For Android
 
-```bash
-# using npm
-npm run android
 
-# OR using Yarn
-yarn android
-```
+## 겪은 문제 및 해결과정
+1. 리액트 네이티브 설치 과정
 
-### For iOS
+[자세히 보기](https://judith-hopps.tistory.com/m/307)
 
-```bash
-# using npm
-npm run ios
 
-# OR using Yarn
-yarn ios
-```
+2. delete 작동시 데이터 업데이트가 되지 않는 문제
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+[자세히 보기](https://judith-hopps.tistory.com/m/308)
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+## 특별히 신경 쓴 점:
 
-## Step 3: Modifying your App
 
-Now that you have successfully run the app, let's modify it.
+1. 파일 구조를 src/component 및 assets/와 같이 이해하기 쉽도록 구성했습니다.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+2. 메인 화면을 3개의 큰 레이아웃으로 나누어 개발했습니다.
 
-## Congratulations! :tada:
 
-You've successfully run and modified your React Native App. :partying_face:
+3. 데이터 불변성을 유지했습니다.
 
-### Now what?
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+4. SVG 아이콘들을 Icons.ts 파일에 모아 관리하였고, 속성을 통해 색상 변경을 용이하게 했습니다.
 
-# Troubleshooting
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+문제 1. 리액트 네이티브 설치
+2. delete 시 초기화 되는 문제
 
-# Learn More
 
-To learn more about React Native, take a look at the following resources:
+## 아쉬운 점
+[자세히 보기](https://judith-hopps.tistory.com/309)
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
