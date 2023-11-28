@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const MainScreen = () => {
+const App = () => {
   const [selectedWeek, setSelectedWeek] = useState(15);
   const [addlist, setAddlist] = useState('');
   const [isVisibleAddBtn, setIsVisibleAddBtn] = useState<boolean>(true);
@@ -39,12 +39,20 @@ const MainScreen = () => {
 
   const weeklyDateRef = useRef<any>(null);
 
-  // useEffect(() => {
-  //   setIsVisibleAddBtn(true);
-  //   setIsVisibleInput(false);
-  //   setIsVisibleEditBtn(true);
-  //   setIsEditing(false);
-  // }, [selectedWeek]);
+  useEffect(() => {
+    setIsVisibleAddBtn(true);
+    setIsVisibleInput(false);
+    setIsVisibleEditBtn(true);
+    setIsEditing(false);
+  }, [selectedWeek]);
+
+  useEffect(() => {
+    if (isEditing) {
+      setIsVisibleAddBtn(false);
+    } else {
+      setIsVisibleAddBtn(true);
+    }
+  }, [isEditing]);
 
   const handleSelectWeek = (week: number) => {
     setSelectedWeek(week);
@@ -70,7 +78,6 @@ const MainScreen = () => {
         isVisibleEditBtn={isVisibleEditBtn}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
-        handleDelete={weeklyDateRef.current?.handleDelete}
       />
 
       <View style={styles.weekSelectionContainer}>
@@ -111,4 +118,4 @@ const MainScreen = () => {
   );
 };
 
-export default MainScreen;
+export default App;

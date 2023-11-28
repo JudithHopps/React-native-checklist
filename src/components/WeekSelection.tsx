@@ -102,7 +102,6 @@ const WeekSelection: React.FC<WeekSelectionProps> = ({
     }
   }, [selectedWeek]);
 
-  // useEffect 내부에서 scrollToSelectedWeek 함수 실행
   useEffect(() => {
     scrollToSelectedWeek();
   }, [scrollToSelectedWeek]);
@@ -110,38 +109,12 @@ const WeekSelection: React.FC<WeekSelectionProps> = ({
   const flatListRef = useRef<FlatList<any>>(null);
 
   const data: number[] = Array.from({length: 41}, (_, index) => index);
-  // const ITEM_HEIGHT = 70;
-
-  // const getItemLayout = useCallback(
-  //   (index: number) => ({
-  //     length: ITEM_HEIGHT,
-  //     offset: ITEM_HEIGHT * index,
-  //     index,
-  //   }),
-  //   [],
-  // );
 
   const handleSelectWeek = (week: number) => {
     onSelectWeek(week);
   };
-  const ITEM_HEIGHT = 73; // Replace with your item height
+  const ITEM_HEIGHT = 73;
 
-  // const initialScrollOffset = selectedWeek * ITEM_HEIGHT;
-
-  // useEffect(() => {
-  //   if (flatListRef.current) {
-  //     flatListRef.current?.scrollToOffset({
-  //       animated: true,
-  //       offset: initialScrollOffset,
-  //     });
-  //   }
-  // }, [selectedWeek, initialScrollOffset]);
-
-  // useEffect(() => {
-  //   if (flatListRef.current) {
-  //     flatListRef.current.scrollToIndex({animated: true, index: selectedWeek});
-  //   }
-  // }, [selectedWeek]);
   const getItemLayout = useCallback(
     (_: any, index: number) => ({
       length: ITEM_HEIGHT,
@@ -167,7 +140,7 @@ const WeekSelection: React.FC<WeekSelectionProps> = ({
       extraData={selectedWeek}
       onEndReachedThreshold={0.5}
       getItemLayout={getItemLayout}
-      // initialScrollIndex={selectedWeek}
+      initialScrollIndex={selectedWeek - 2}
     />
   );
 };

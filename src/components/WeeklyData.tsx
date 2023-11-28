@@ -4,10 +4,16 @@ import React, {
   useImperativeHandle,
   forwardRef,
 } from 'react';
-import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import {CheckboxIcon, ChecklistsIcon, MinusIcon} from '../assets/svgs/Icons';
 import ProgressBar from './ProgressBar';
-import Margin from './common/Margin';
 
 type ChecklistFetchItem = {
   weekNumber: number;
@@ -40,9 +46,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  editContatiner: {
+  editContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     paddingVertical: 10,
     justifyContent: 'space-between',
   },
@@ -100,9 +105,10 @@ const WeeklyData = forwardRef<any, WeeklyDataProps>(
     const [completedCount, setCompletedCount] = useState<number>(0);
     const [totalItems, setTotalItems] = useState<number>(0);
 
+    const checkListTxtWidth = Dimensions.get('window').width - 58;
+
     useImperativeHandle(ref, () => ({
       addChecklist,
-      handleDelete,
     }));
 
     useEffect(() => {
@@ -141,12 +147,8 @@ const WeeklyData = forwardRef<any, WeeklyDataProps>(
       const completedTasks = selectedWeekData.filter(item => item.completed);
       setCompletedCount(completedTasks.length);
       setTotalItems(selectedWeekData.length);
-      setIsVisibleEditBtn(selectedWeekData.length > 0);
-    }, [selectedWeekData, setIsVisibleEditBtn]);
-
-    useEffect(() => {
-      console.log('upup', updatedSelectedData);
-    }, [updatedSelectedData]);
+      setIsVisibleEditBtn(isEditing || selectedWeekData.length > 0);
+    }, [selectedWeekData, setIsVisibleEditBtn, isEditing]);
 
     const toggleComplete = (index: number) => {
       const modifiedData = [...selectedWeekData];
@@ -161,35 +163,10 @@ const WeeklyData = forwardRef<any, WeeklyDataProps>(
 
     const toggleDelete = (index: number) => {
       const modifiedData = updatedSelectedData.filter((_, i) => i !== index);
+
       setUpdatedSelectedData(modifiedData);
-      console.log('Update', modifiedData);
+      setSelectedWeekData(modifiedData);
     };
-
-    const handleDelete = () => {
-      if (updatedSelectedData) {
-        const updatedData = [
-          ...checklistData.filter(v => v.weekNumber !== selectedWeek),
-          ...updatedSelectedData,
-        ];
-
-        setChecklistData(updatedData);
-        console.log('gogo');
-        console.log('Update', updatedSelectedData);
-      }
-    };
-    // const handleDelete = () => {
-    //   if (updatedSelectedData && updatedSelectedData.length > 0) {
-    //     const updatedData = checklistData.filter(item => {
-    //       return !updatedSelectedData.some(
-    //         selectedItem => selectedItem.weekNumber === item.weekNumber,
-    //       );
-    //     });
-
-    //     setChecklistData(updatedData);
-    //     console.log('gogo');
-    //     console.log('Update', updatedSelectedData);
-    //   }
-    // };
 
     const addChecklist = (newChecklist: string) => {
       const updatedChecklist = [
@@ -201,7 +178,15 @@ const WeeklyData = forwardRef<any, WeeklyDataProps>(
 
     return (
       <View style={styles.container}>
-        {totalItems > 0 ? (
+        {!isEditing && totalItems === 0 ? (
+          <View style={styles.emptyListContainer}>
+            {ChecklistsIcon()}
+            <Text style={styles.noChecklistsText}>No checklists</Text>
+            <Text style={styles.addChecklistsText}>
+              Add checklists that should be checked weekly.
+            </Text>
+          </View>
+        ) : (
           <View>
             <ProgressBar
               totalItems={totalItems}
@@ -232,16 +217,16 @@ const WeeklyData = forwardRef<any, WeeklyDataProps>(
                 data={updatedSelectedData}
                 renderItem={({item, index}) => (
                   <TouchableOpacity onPress={() => toggleDelete(index)}>
-                    <View style={styles.editContatiner}>
+                    <View style={styles.editContainer}>
                       <Text
-                        style={
+                        style={[
                           item.completed
                             ? styles.completelist
-                            : styles.uncompletelist
-                        }>
+                            : styles.uncompletelist,
+                          {width: checkListTxtWidth},
+                        ]}>
                         {item.content}
                       </Text>
-                      <Margin right={16} />
 
                       <View style={styles.minusContainer}>
                         {isEditing && MinusIcon()}
@@ -252,14 +237,6 @@ const WeeklyData = forwardRef<any, WeeklyDataProps>(
                 keyExtractor={(_, index) => index.toString()}
               />
             )}
-          </View>
-        ) : (
-          <View style={styles.emptyListContainer}>
-            {ChecklistsIcon()}
-            <Text style={styles.noChecklistsText}>No checklists</Text>
-            <Text style={styles.addChecklistsText}>
-              Add checklists that should be checked weekly.
-            </Text>
           </View>
         )}
       </View>

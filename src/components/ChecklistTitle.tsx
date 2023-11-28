@@ -29,7 +29,6 @@ type ChecklistTitleProps = {
   isVisibleEditBtn: boolean;
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  handleDelete: () => void;
 };
 
 const ChecklistTitle: React.FC<ChecklistTitleProps> = ({
@@ -37,14 +36,11 @@ const ChecklistTitle: React.FC<ChecklistTitleProps> = ({
   isVisibleEditBtn,
   isEditing,
   setIsEditing,
-  handleDelete,
 }) => {
   const editText = isEditing ? 'Done' : 'Edit';
 
   const onClickEditBtn = () => {
     setIsEditing(!isEditing);
-    console.log('DDD');
-    handleDelete();
   };
   return (
     <View style={styles.container}>
