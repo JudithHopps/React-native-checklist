@@ -1,56 +1,118 @@
 import React from 'react';
 import {View, FlatList, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {Rectangle897} from '../assets/svgs/Icons';
 
 const styles = StyleSheet.create({
-  week: {
-    fontSize: 16,
+  selectedweekTxt: {
+    fontSize: 11,
+    fontWeight: '400',
+    color: '#FFF',
+    paddingTop: 10,
+    paddingHorizontal: 22,
+  },
+  unselectedweekTxt: {
+    fontSize: 11,
     fontWeight: '700',
-    color: '#333',
-    paddingVertical: 10,
+    color: '#999',
+    paddingTop: 10,
+    paddingHorizontal: 22,
+  },
+  selectedweekNum: {
+    fontSize: 18,
+    fontWeight: '400',
+    color: '#FFF',
+    paddingTop: 4,
     paddingHorizontal: 20,
+  },
+  unselectedweekNum: {
+    fontSize: 18,
+    fontWeight: '400',
+    color: '#999',
+    paddingTop: 4,
+    paddingHorizontal: 20,
+  },
+  rectangleComponent: {
+    position: 'absolute',
+    top: 0,
+    left: 10,
+    width: 50,
+    height: 62,
+  },
+  WeekItemContainer: {
+    alignItems: 'center',
   },
 });
 
 type WeekItemProps = {
   item: number;
+  isSelected: boolean;
 };
-
-const WeekItem: React.FC<WeekItemProps> = ({item}) => (
-  <View style={styles.week}>
-    <Text>{`Week ${item}`}</Text>
-  </View>
-);
 
 type WeekSelectionProps = {
   selectedWeek: number;
   onSelectWeek: (week: number) => void;
 };
 
+type RenderItemProps = {
+  item: number;
+  handleSelectWeek: (week: number) => void;
+  selectedWeek: number;
+};
+
+const WeekItem: React.FC<WeekItemProps> = ({item, isSelected}) => {
+  return (
+    <View style={styles.WeekItemContainer}>
+      <Text
+        style={isSelected ? styles.selectedweekTxt : styles.unselectedweekTxt}>
+        week
+      </Text>
+      <Text
+        style={isSelected ? styles.selectedweekNum : styles.unselectedweekNum}>
+        {item}
+      </Text>
+    </View>
+  );
+};
+
+const RenderItem: React.FC<RenderItemProps> = ({
+  item,
+  selectedWeek,
+  handleSelectWeek,
+}) => (
+  <TouchableOpacity onPress={() => handleSelectWeek(item)}>
+    <View style={styles.rectangleComponent}>
+      {Rectangle897(item === selectedWeek)}
+    </View>
+    <WeekItem item={item} isSelected={item === selectedWeek} />
+  </TouchableOpacity>
+);
+
 const WeekSelection: React.FC<WeekSelectionProps> = ({
   selectedWeek,
   onSelectWeek,
 }) => {
   const data = Array.from({length: 41}, (_, index) => index);
+  // const initialIndex = Math.max(selectedWeek - 4, 15);
 
   const handleSelectWeek = (week: number) => {
     onSelectWeek(week);
   };
 
-  const renderItem = ({item}: {item: number}) => (
-    <TouchableOpacity onPress={() => handleSelectWeek(item)}>
-      <WeekItem item={item} />
-    </TouchableOpacity>
-  );
-
   return (
     <FlatList
-      horizontal={true} // 수평 스크롤
+      horizontal={true}
       data={data}
-      renderItem={renderItem}
+      renderItem={({item}) => (
+        <RenderItem
+          item={item}
+          handleSelectWeek={handleSelectWeek}
+          selectedWeek={selectedWeek}
+        />
+      )}
       keyExtractor={item => item.toString()}
       extraData={selectedWeek}
-      onEndReached={() => {}}
       onEndReachedThreshold={0.5}
+      // initialScrollIndex={initialIndex}
     />
   );
 };
