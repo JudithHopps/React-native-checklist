@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useEffect, useCallback} from 'react';
 import {View, FlatList, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Rectangle897} from '../assets/svgs/Icons';
 
@@ -22,14 +22,14 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#FFF',
     paddingTop: 4,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   unselectedweekNum: {
     fontSize: 18,
     fontWeight: '400',
     color: '#999',
     paddingTop: 4,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   rectangleComponent: {
     position: 'absolute',
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   },
   WeekItemContainer: {
     alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
@@ -91,15 +92,68 @@ const WeekSelection: React.FC<WeekSelectionProps> = ({
   selectedWeek,
   onSelectWeek,
 }) => {
-  const data = Array.from({length: 41}, (_, index) => index);
-  // const initialIndex = Math.max(selectedWeek - 4, 15);
+  const scrollToSelectedWeek = useCallback(() => {
+    if (flatListRef.current) {
+      flatListRef.current?.scrollToIndex({
+        animated: true,
+        index: selectedWeek,
+        viewPosition: 0.5,
+      });
+    }
+  }, [selectedWeek]);
+
+  // useEffect 내부에서 scrollToSelectedWeek 함수 실행
+  useEffect(() => {
+    scrollToSelectedWeek();
+  }, [scrollToSelectedWeek]);
+
+  const flatListRef = useRef<FlatList<any>>(null);
+
+  const data: number[] = Array.from({length: 41}, (_, index) => index);
+  // const ITEM_HEIGHT = 70;
+
+  // const getItemLayout = useCallback(
+  //   (index: number) => ({
+  //     length: ITEM_HEIGHT,
+  //     offset: ITEM_HEIGHT * index,
+  //     index,
+  //   }),
+  //   [],
+  // );
 
   const handleSelectWeek = (week: number) => {
     onSelectWeek(week);
   };
+  const ITEM_HEIGHT = 73; // Replace with your item height
+
+  // const initialScrollOffset = selectedWeek * ITEM_HEIGHT;
+
+  // useEffect(() => {
+  //   if (flatListRef.current) {
+  //     flatListRef.current?.scrollToOffset({
+  //       animated: true,
+  //       offset: initialScrollOffset,
+  //     });
+  //   }
+  // }, [selectedWeek, initialScrollOffset]);
+
+  // useEffect(() => {
+  //   if (flatListRef.current) {
+  //     flatListRef.current.scrollToIndex({animated: true, index: selectedWeek});
+  //   }
+  // }, [selectedWeek]);
+  const getItemLayout = useCallback(
+    (_: any, index: number) => ({
+      length: ITEM_HEIGHT,
+      offset: ITEM_HEIGHT * index,
+      index,
+    }),
+    [],
+  );
 
   return (
     <FlatList
+      ref={flatListRef}
       horizontal={true}
       data={data}
       renderItem={({item}) => (
@@ -112,7 +166,8 @@ const WeekSelection: React.FC<WeekSelectionProps> = ({
       keyExtractor={item => item.toString()}
       extraData={selectedWeek}
       onEndReachedThreshold={0.5}
-      // initialScrollIndex={initialIndex}
+      getItemLayout={getItemLayout}
+      // initialScrollIndex={selectedWeek}
     />
   );
 };
