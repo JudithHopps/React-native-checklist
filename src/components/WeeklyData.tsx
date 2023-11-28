@@ -7,6 +7,7 @@ import React, {
 import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import {CheckboxIcon, ChecklistsIcon, MinusIcon} from '../assets/svgs/Icons';
 import ProgressBar from './ProgressBar';
+import Margin from './common/Margin';
 
 type ChecklistFetchItem = {
   weekNumber: number;
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
     paddingBottom: 18,
   },
   checklistContatiner: {
+    width: '100%',
     display: 'flex',
     paddingVertical: 10,
     alignItems: 'center',
@@ -48,13 +50,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     color: '#333',
-    paddingHorizontal: 12,
+    paddingLeft: 12,
+    paddingRight: 20,
   },
   completelist: {
     fontSize: 14,
     fontWeight: '400',
     color: '#C4C4C4',
-    paddingHorizontal: 12,
+    paddingLeft: 12,
+    paddingRight: 20,
     textDecorationLine: 'line-through',
   },
   emptyListContainer: {
@@ -78,6 +82,7 @@ const styles = StyleSheet.create({
     right: 20,
   },
   minusContainer: {
+    flex: 1,
     width: 28,
     alignItems: 'flex-end',
   },
@@ -146,7 +151,12 @@ const WeeklyData = forwardRef<any, WeeklyDataProps>(
     const toggleComplete = (index: number) => {
       const modifiedData = [...selectedWeekData];
       modifiedData[index].completed = !modifiedData[index].completed;
-      setSelectedWeekData(modifiedData);
+      const newChecklistData = [
+        ...checklistData.filter(v => v.weekNumber !== selectedWeek),
+        ...modifiedData,
+      ];
+
+      setChecklistData(newChecklistData);
     };
 
     const toggleDelete = (index: number) => {
@@ -224,14 +234,14 @@ const WeeklyData = forwardRef<any, WeeklyDataProps>(
                   <TouchableOpacity onPress={() => toggleDelete(index)}>
                     <View style={styles.editContatiner}>
                       <Text
-                        style={[
+                        style={
                           item.completed
                             ? styles.completelist
-                            : styles.uncompletelist,
-                          {marginRight: 16},
-                        ]}>
+                            : styles.uncompletelist
+                        }>
                         {item.content}
                       </Text>
+                      <Margin right={16} />
 
                       <View style={styles.minusContainer}>
                         {isEditing && MinusIcon()}
